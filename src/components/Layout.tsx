@@ -20,7 +20,7 @@ const Layout = () => {
   const location = useLocation();
 
   const navigation = [
-    { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Documents', href: '/documents', icon: FileText },
     { name: 'Lawyers', href: '/lawyers', icon: Users },
     { name: 'Legal Updates', href: '/updates', icon: Newspaper },
