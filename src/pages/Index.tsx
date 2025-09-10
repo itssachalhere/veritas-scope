@@ -70,7 +70,7 @@ const Index = () => {
                 className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6 h-auto"
                 asChild
               >
-                <Link to="/dashboard">
+                <Link to="/app">
                   Get Started Free
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
@@ -161,7 +161,7 @@ const Index = () => {
               
               <div className="pt-6">
                 <Button size="lg" className="gradient-primary" asChild>
-                  <Link to="/dashboard">
+                  <Link to="/app">
                     Start Analyzing Documents
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
@@ -208,7 +208,7 @@ const Index = () => {
                 className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6 h-auto"
                 asChild
               >
-                <Link to="/dashboard">
+                <Link to="/app">
                   Get Started Now
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
@@ -219,7 +219,7 @@ const Index = () => {
                 className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-6 h-auto"
                 asChild
               >
-                <Link to="/lawyers">
+                <Link to="/app/lawyers">
                   Find Legal Experts
                 </Link>
               </Button>

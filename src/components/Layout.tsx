@@ -20,17 +20,17 @@ const Layout = () => {
   const location = useLocation();
 
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Documents', href: '/documents', icon: FileText },
-    { name: 'Lawyers', href: '/lawyers', icon: Users },
-    { name: 'Legal Updates', href: '/updates', icon: Newspaper },
-    { name: 'Profile', href: '/profile', icon: User },
-    { name: 'Settings', href: '/settings', icon: Settings },
+    { name: 'Dashboard', href: '/app', icon: LayoutDashboard },
+    { name: 'Documents', href: '/app/documents', icon: FileText },
+    { name: 'Lawyers', href: '/app/lawyers', icon: Users },
+    { name: 'Legal Updates', href: '/app/updates', icon: Newspaper },
+    { name: 'Profile', href: '/app/profile', icon: User },
+    { name: 'Settings', href: '/app/settings', icon: Settings },
   ];
 
   const isActive = (path: string) => {
-    if (path === '/') {
-      return location.pathname === '/';
+    if (path === '/app') {
+      return location.pathname === '/app' || location.pathname === '/app/dashboard';
     }
     return location.pathname.startsWith(path);
   };
