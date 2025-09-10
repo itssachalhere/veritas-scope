@@ -1,21 +1,15 @@
-import { ArrowRight, Shield, FileText, Users, Zap, CheckCircle, Scale, Menu, X, LayoutDashboard, Newspaper, User, Settings } from 'lucide-react';
+import { ArrowRight, Shield, FileText, Users, Zap, CheckCircle, Scale, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import heroImage from '@/assets/hero-legal.jpg';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import Footer from '@/components/Footer';
 
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navigation = [
-    { name: 'Dashboard', href: '/app', icon: LayoutDashboard },
-    { name: 'Documents', href: '/app/documents', icon: FileText },
-    { name: 'Lawyers', href: '/app/lawyers', icon: Users },
-    { name: 'Legal Updates', href: '/app/updates', icon: Newspaper },
-    { name: 'Profile', href: '/app/profile', icon: User },
-  ];
   const features = [
     {
       icon: FileText,
@@ -64,19 +58,6 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="flex items-center space-x-2 text-foreground-muted hover:text-primary transition-smooth"
-                >
-                  <item.icon className="h-4 w-4" />
-                  <span>{item.name}</span>
-                </Link>
-              ))}
-            </div>
 
             {/* Desktop Auth Buttons */}
             <div className="hidden md:flex items-center space-x-4">
@@ -104,25 +85,12 @@ const Index = () => {
           {mobileMenuOpen && (
             <div className="md:hidden py-4 border-t border-border">
               <div className="space-y-2">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className="flex items-center space-x-3 px-3 py-2 text-foreground-muted hover:text-primary hover:bg-surface rounded-lg transition-smooth"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <item.icon className="h-4 w-4" />
-                    <span>{item.name}</span>
-                  </Link>
-                ))}
-                <div className="pt-4 space-y-2">
-                  <Button variant="ghost" className="w-full" asChild>
-                    <Link to="/app" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
-                  </Button>
-                  <Button className="w-full" asChild>
-                    <Link to="/app" onClick={() => setMobileMenuOpen(false)}>Get Started</Link>
-                  </Button>
-                </div>
+                <Button variant="ghost" className="w-full" asChild>
+                  <Link to="/app" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
+                </Button>
+                <Button className="w-full" asChild>
+                  <Link to="/app" onClick={() => setMobileMenuOpen(false)}>Get Started</Link>
+                </Button>
               </div>
             </div>
           )}
@@ -317,6 +285,8 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };

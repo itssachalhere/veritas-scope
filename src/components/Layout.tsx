@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
+import Footer from '@/components/Footer';
 import { 
   LayoutDashboard, 
   FileText, 
@@ -152,6 +153,8 @@ const Layout = () => {
             <Outlet />
           </div>
         </main>
+        
+        <Footer />
       </div>
     </div>
   );
