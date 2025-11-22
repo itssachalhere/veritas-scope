@@ -10,6 +10,7 @@ import {
   Calendar,
   HardDrive
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -38,6 +39,8 @@ interface DocumentCardProps {
 }
 
 export const DocumentCard = ({ document }: DocumentCardProps) => {
+  const navigate = useNavigate();
+
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'analyzed':
@@ -155,7 +158,12 @@ export const DocumentCard = ({ document }: DocumentCardProps) => {
         {/* Action Button */}
         <div className="pt-2">
           {document.status === 'analyzed' ? (
-            <Button variant="outline" size="sm" className="w-full">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="w-full"
+              onClick={() => navigate(`/app/documents/${document.id}`)}
+            >
               <Eye className="mr-2 h-4 w-4" />
               View Analysis
             </Button>

@@ -7,6 +7,7 @@ import Layout from "./components/Layout";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Documents from "./pages/Documents";
+import DocumentAnalysis from "./pages/DocumentAnalysis";
 import Lawyers from "./pages/Lawyers";
 import Updates from "./pages/Updates";
 import Profile from "./pages/Profile";
@@ -26,6 +27,7 @@ const App = () => (
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="documents" element={<Documents />} />
+            <Route path="documents/:id" element={<DocumentAnalysis />} />
             <Route path="lawyers" element={<Lawyers />} />
             <Route path="updates" element={<Updates />} />
             <Route path="profile" element={<Profile />} />
