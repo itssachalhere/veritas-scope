@@ -53,7 +53,7 @@ const Layout = () => {
                 <Scale className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="font-heading font-bold text-lg">LegalAI</h1>
+                <h1 className="font-heading font-bold text-lg">QanunAI</h1>
                 <p className="text-xs text-foreground-muted">Document Analyzer</p>
               </div>
             </div>

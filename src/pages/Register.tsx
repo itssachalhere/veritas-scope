@@ -85,7 +85,7 @@ const Register = () => {
             <Scale className="h-8 w-8 text-primary" />
           </div>
           <div className="text-white">
-            <h1 className="font-heading font-bold text-2xl">LegalAI</h1>
+            <h1 className="font-heading font-bold text-2xl">QanunAI</h1>
             <p className="text-sm text-white/80">Document Analyzer</p>
           </div>
         </Link>
