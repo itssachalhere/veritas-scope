@@ -62,10 +62,10 @@ const Index = () => {
             {/* Desktop Auth Buttons */}
             <div className="hidden md:flex items-center space-x-4">
               <Button variant="ghost" asChild>
-                <Link to="/app">Sign In</Link>
+                <Link to="/auth">Sign In</Link>
               </Button>
               <Button asChild>
-                <Link to="/app">Get Started</Link>
+                <Link to="/register">Get Started</Link>
               </Button>
             </div>
 
@@ -86,10 +86,10 @@ const Index = () => {
             <div className="md:hidden py-4 border-t border-border">
               <div className="space-y-2">
                 <Button variant="ghost" className="w-full" asChild>
-                  <Link to="/app" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
+                  <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
                 </Button>
                 <Button className="w-full" asChild>
-                  <Link to="/app" onClick={() => setMobileMenuOpen(false)}>Get Started</Link>
+                  <Link to="/register" onClick={() => setMobileMenuOpen(false)}>Get Started</Link>
                 </Button>
               </div>
             </div>
@@ -128,7 +128,7 @@ const Index = () => {
                 className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6 h-auto"
                 asChild
               >
-                <Link to="/app">
+                <Link to="/register">
                   Get Started Free
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
@@ -219,7 +219,7 @@ const Index = () => {
               
               <div className="pt-6">
                 <Button size="lg" className="gradient-primary" asChild>
-                  <Link to="/app">
+                  <Link to="/register">
                     Start Analyzing Documents
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
@@ -266,7 +266,7 @@ const Index = () => {
                 className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6 h-auto"
                 asChild
               >
-                <Link to="/app">
+                <Link to="/register">
                   Get Started Now
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
