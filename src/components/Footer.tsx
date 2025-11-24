@@ -34,7 +34,7 @@ const Footer = () => {
                 <Scale className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
-                <h3 className="font-heading font-bold text-lg">LegalAI</h3>
+                <h3 className="font-heading font-bold text-lg">QanunAI</h3>
                 <p className="text-xs text-foreground-muted">Document Analyzer</p>
               </div>
             </div>
@@ -97,10 +97,10 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-primary flex-shrink-0" />
                 <a 
-                  href="mailto:contact@legalai.com"
+                  href="mailto:contact@qanunai.com"
                   className="text-foreground-muted hover:text-primary transition-smooth text-sm"
                 >
-                  contact@legalai.com
+                  contact@qanunai.com
                 </a>
               </div>
               <div className="flex items-center space-x-3">
@@ -128,7 +128,7 @@ const Footer = () => {
         <div className="mt-12 pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-foreground-muted text-sm">
-              © {new Date().getFullYear()} LegalAI. All rights reserved.
+              © {new Date().getFullYear()} QanunAI. All rights reserved.
             </p>
             <p className="text-foreground-muted text-sm mt-2 md:mt-0">
               Built with ❤️ for legal professionals
