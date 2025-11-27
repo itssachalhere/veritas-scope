@@ -1,11 +1,14 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Calendar, User, Settings, LogOut, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const LawyerLayout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout, user } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
@@ -14,6 +17,11 @@ const LawyerLayout = () => {
     { icon: User, label: "My Profile", path: "/lawyer/profile" },
     { icon: Settings, label: "Settings", path: "/lawyer/settings" },
   ];
+
+  const handleLogout = () => {
+    logout();
+    navigate('/auth');
+  };
 
   const NavContent = () => (
     <nav className="space-y-2">
@@ -50,8 +58,11 @@ const LawyerLayout = () => {
         <div className="flex-1 p-4">
           <NavContent />
         </div>
-        <div className="p-4 border-t">
-          <Button variant="ghost" className="w-full justify-start" onClick={() => {}}>
+        <div className="p-4 border-t space-y-2">
+          <div className="px-3 py-2 text-sm text-muted-foreground">
+            {user?.email || 'Lawyer'}
+          </div>
+          <Button variant="ghost" className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10" onClick={handleLogout}>
             <LogOut className="h-5 w-5 mr-3" />
             Logout
           </Button>
