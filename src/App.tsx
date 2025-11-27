@@ -3,6 +3,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
+import RequireAuth from "./components/RequireAuth";
 import Layout from "./components/Layout";
 import LawyerLayout from "./components/LawyerLayout";
 import Index from "./pages/Index";
@@ -25,33 +27,48 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/app" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="documents" element={<Documents />} />
-            <Route path="documents/:id" element={<DocumentAnalysis />} />
-            <Route path="lawyers" element={<Lawyers />} />
-            <Route path="updates" element={<Updates />} />
-            <Route path="profile" element={<Profile />} />
-          </Route>
-          <Route path="/lawyer" element={<LawyerLayout />}>
-            <Route index element={<LawyerDashboard />} />
-            <Route path="dashboard" element={<LawyerDashboard />} />
-            <Route path="consultations" element={<Consultations />} />
-            <Route path="profile" element={<LawyerProfile />} />
-            <Route path="settings" element={<LawyerSettings />} />
-          </Route>
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/register" element={<Register />} />
+            
+            {/* User Routes - Protected */}
+            <Route path="/app" element={
+              <RequireAuth roles={['USER']}>
+                <Layout />
+              </RequireAuth>
+            }>
+              <Route index element={<Dashboard />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="documents" element={<Documents />} />
+              <Route path="documents/:id" element={<DocumentAnalysis />} />
+              <Route path="lawyers" element={<Lawyers />} />
+              <Route path="updates" element={<Updates />} />
+              <Route path="profile" element={<Profile />} />
+            </Route>
+            
+            {/* Lawyer Routes - Protected */}
+            <Route path="/lawyer" element={
+              <RequireAuth roles={['LAWYER']}>
+                <LawyerLayout />
+              </RequireAuth>
+            }>
+              <Route index element={<LawyerDashboard />} />
+              <Route path="dashboard" element={<LawyerDashboard />} />
+              <Route path="consultations" element={<Consultations />} />
+              <Route path="profile" element={<LawyerProfile />} />
+              <Route path="settings" element={<LawyerSettings />} />
+            </Route>
+            
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

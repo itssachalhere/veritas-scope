@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Scale, User, Briefcase, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,12 +6,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login, isAuthenticated, role } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [userType, setUserType] = useState<'user' | 'lawyer'>('user');
   const [formData, setFormData] = useState({
@@ -19,24 +20,39 @@ const Auth = () => {
     password: '',
   });
 
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated && role) {
+      if (role === "USER") {
+        navigate('/app/dashboard', { replace: true });
+      } else if (role === "LAWYER") {
+        navigate('/lawyer/dashboard', { replace: true });
+      }
+    }
+  }, [isAuthenticated, role, navigate]);
+
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
-      });
-
-      if (error) throw error;
+      // Convert userType to Role format
+      const selectedRole = userType === 'user' ? 'USER' : 'LAWYER';
+      
+      // Use AuthContext login (mock for now)
+      await login(formData.email, formData.password, selectedRole);
 
       toast({
         title: "Welcome back!",
         description: "You've successfully signed in.",
       });
 
-      navigate('/app/dashboard');
+      // Redirect based on role
+      if (selectedRole === "USER") {
+        navigate('/app/dashboard');
+      } else {
+        navigate('/lawyer/dashboard');
+      }
     } catch (error: any) {
       toast({
         title: "Sign in failed",

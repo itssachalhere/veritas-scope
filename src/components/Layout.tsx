@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, NavLink, useLocation } from 'react-router-dom';
+import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Footer from '@/components/Footer';
 import { 
   LayoutDashboard, 
@@ -11,14 +11,18 @@ import {
   Menu,
   X,
   Scale,
-  Shield
+  Shield,
+  LogOut
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout, user } = useAuth();
 
   const navigation = [
     { name: 'Dashboard', href: '/app', icon: LayoutDashboard },
@@ -34,6 +38,11 @@ const Layout = () => {
       return location.pathname === '/app' || location.pathname === '/app/dashboard';
     }
     return location.pathname.startsWith(path);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/auth');
   };
 
   return (
@@ -88,25 +97,45 @@ const Layout = () => {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="p-4 border-t border-border">
+        <div className="p-4 border-t border-border space-y-2">
           {sidebarOpen ? (
-            <div className="flex items-center space-x-3 p-3 bg-primary/5 rounded-lg">
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+            <>
+              <div className="flex items-center space-x-3 p-3 bg-primary/5 rounded-lg">
+                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                  <Shield className="h-4 w-4 text-primary-foreground" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-foreground truncate">
+                    {user?.email || 'User'}
+                  </p>
+                  <p className="text-xs text-foreground-muted truncate">
+                    Standard User
+                  </p>
+                </div>
+              </div>
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+                onClick={handleLogout}
+              >
+                <LogOut className="h-4 w-4 mr-3" />
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center mx-auto">
                 <Shield className="h-4 w-4 text-primary-foreground" />
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">
-                  John Doe
-                </p>
-                <p className="text-xs text-foreground-muted truncate">
-                  Premium Plan
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center mx-auto">
-              <Shield className="h-4 w-4 text-primary-foreground" />
-            </div>
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className="w-8 h-8 mx-auto text-destructive hover:text-destructive hover:bg-destructive/10"
+                onClick={handleLogout}
+              >
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </>
           )}
         </div>
       </div>
