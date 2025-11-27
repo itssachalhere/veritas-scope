@@ -8,11 +8,10 @@ import {
   Edit,
   Save,
   X,
-  Shield,
   CreditCard,
-  Bell,
-  Globe,
-  Lock
+  Briefcase,
+  FileText,
+  AlertTriangle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -30,6 +29,7 @@ const Profile = () => {
     phone: "+1 (555) 123-4567",
     company: "Tech Innovations Inc.",
     location: "San Francisco, CA",
+    jobTitle: "Legal Counsel",
     plan: "Premium",
     avatar: "/api/placeholder/100/100"
   });
@@ -52,30 +52,29 @@ const Profile = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6 max-w-5xl">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-heading font-bold">Profile</h1>
-          <p className="text-foreground-muted">Manage your account settings and preferences</p>
+          <p className="text-muted-foreground">Manage your personal details and preferences</p>
         </div>
-        {!isEditing && (
-          <Button onClick={() => setIsEditing(true)}>
-            <Edit className="mr-2 h-4 w-4" />
-            Edit Profile
-          </Button>
-        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Profile Information */}
+        {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Basic Info */}
+          {/* Personal Information */}
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="font-heading">Personal Information</CardTitle>
-                {isEditing && (
+                {!isEditing ? (
+                  <Button size="sm" onClick={() => setIsEditing(true)}>
+                    <Edit className="mr-2 h-4 w-4" />
+                    Edit Profile
+                  </Button>
+                ) : (
                   <div className="flex gap-2">
                     <Button size="sm" onClick={handleSave}>
                       <Save className="mr-2 h-4 w-4" />
@@ -89,7 +88,7 @@ const Profile = () => {
                 )}
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
               <div className="flex items-center space-x-4">
                 <Avatar className="h-20 w-20">
                   <AvatarImage src={profile.avatar} alt={profile.name} />
@@ -114,7 +113,10 @@ const Profile = () => {
                       onChange={(e) => setProfile({...profile, name: e.target.value})}
                     />
                   ) : (
-                    <div className="p-2 text-sm">{profile.name}</div>
+                    <div className="flex items-center p-2 text-sm">
+                      <User className="h-4 w-4 mr-2 text-muted-foreground" />
+                      {profile.name}
+                    </div>
                   )}
                 </div>
 
@@ -128,8 +130,8 @@ const Profile = () => {
                       onChange={(e) => setProfile({...profile, email: e.target.value})}
                     />
                   ) : (
-                    <div className="p-2 text-sm flex items-center">
-                      <Mail className="h-4 w-4 mr-2 text-foreground-muted" />
+                    <div className="flex items-center p-2 text-sm">
+                      <Mail className="h-4 w-4 mr-2 text-muted-foreground" />
                       {profile.email}
                     </div>
                   )}
@@ -144,15 +146,31 @@ const Profile = () => {
                       onChange={(e) => setProfile({...profile, phone: e.target.value})}
                     />
                   ) : (
-                    <div className="p-2 text-sm flex items-center">
-                      <Phone className="h-4 w-4 mr-2 text-foreground-muted" />
+                    <div className="flex items-center p-2 text-sm">
+                      <Phone className="h-4 w-4 mr-2 text-muted-foreground" />
                       {profile.phone}
                     </div>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="company">Company</Label>
+                  <Label htmlFor="jobTitle">Job Title / Role</Label>
+                  {isEditing ? (
+                    <Input
+                      id="jobTitle"
+                      value={profile.jobTitle}
+                      onChange={(e) => setProfile({...profile, jobTitle: e.target.value})}
+                    />
+                  ) : (
+                    <div className="flex items-center p-2 text-sm">
+                      <Briefcase className="h-4 w-4 mr-2 text-muted-foreground" />
+                      {profile.jobTitle}
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="company">Company <span className="text-muted-foreground">(optional)</span></Label>
                   {isEditing ? (
                     <Input
                       id="company"
@@ -160,8 +178,8 @@ const Profile = () => {
                       onChange={(e) => setProfile({...profile, company: e.target.value})}
                     />
                   ) : (
-                    <div className="p-2 text-sm flex items-center">
-                      <Building className="h-4 w-4 mr-2 text-foreground-muted" />
+                    <div className="flex items-center p-2 text-sm">
+                      <Building className="h-4 w-4 mr-2 text-muted-foreground" />
                       {profile.company}
                     </div>
                   )}
@@ -176,8 +194,8 @@ const Profile = () => {
                       onChange={(e) => setProfile({...profile, location: e.target.value})}
                     />
                   ) : (
-                    <div className="p-2 text-sm flex items-center">
-                      <MapPin className="h-4 w-4 mr-2 text-foreground-muted" />
+                    <div className="flex items-center p-2 text-sm">
+                      <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
                       {profile.location}
                     </div>
                   )}
@@ -186,7 +204,7 @@ const Profile = () => {
             </CardContent>
           </Card>
 
-          {/* Notification Settings */}
+          {/* Notification Preferences */}
           <Card>
             <CardHeader>
               <CardTitle className="font-heading">Notification Preferences</CardTitle>
@@ -198,7 +216,7 @@ const Profile = () => {
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Email Alerts</Label>
-                  <p className="text-sm text-foreground-muted">
+                  <p className="text-sm text-muted-foreground">
                     Receive important security and risk alerts
                   </p>
                 </div>
@@ -213,7 +231,7 @@ const Profile = () => {
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Risk Notifications</Label>
-                  <p className="text-sm text-foreground-muted">
+                  <p className="text-sm text-muted-foreground">
                     Get notified when high-risk clauses are detected
                   </p>
                 </div>
@@ -228,7 +246,7 @@ const Profile = () => {
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Weekly Reports</Label>
-                  <p className="text-sm text-foreground-muted">
+                  <p className="text-sm text-muted-foreground">
                     Receive weekly summaries of your document analysis
                   </p>
                 </div>
@@ -243,8 +261,8 @@ const Profile = () => {
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Marketing Emails</Label>
-                  <p className="text-sm text-foreground-muted">
-                    Receive product updates and legal insights
+                  <p className="text-sm text-muted-foreground">
+                    Product updates and legal insights
                   </p>
                 </div>
                 <Switch
@@ -260,27 +278,36 @@ const Profile = () => {
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Account Status */}
+          {/* Account Usage / Status */}
           <Card>
             <CardHeader>
-              <CardTitle className="font-heading">Account Status</CardTitle>
+              <CardTitle className="font-heading">Account Usage</CardTitle>
+              <CardDescription>Your current plan and usage statistics</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Plan</span>
-                <Badge className="bg-accent text-accent-foreground">
+              <div className="flex items-center justify-between pb-4 border-b">
+                <span className="text-sm font-medium">Current Plan</span>
+                <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/20">
                   {profile.plan}
                 </Badge>
               </div>
               
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Documents Analyzed</span>
-                <span className="text-sm font-medium">247</span>
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Risk Items Found</span>
-                <span className="text-sm font-medium">89</span>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <FileText className="h-4 w-4 mr-2" />
+                    Documents Analyzed
+                  </div>
+                  <span className="text-lg font-semibold">247</span>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <AlertTriangle className="h-4 w-4 mr-2" />
+                    Risk Items Found
+                  </div>
+                  <span className="text-lg font-semibold">89</span>
+                </div>
               </div>
               
               <div className="pt-4 border-t">
@@ -289,49 +316,6 @@ const Profile = () => {
                   Manage Billing
                 </Button>
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Security */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-heading">Security</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Button variant="outline" className="w-full justify-start">
-                <Lock className="mr-2 h-4 w-4" />
-                Change Password
-              </Button>
-              
-              <Button variant="outline" className="w-full justify-start">
-                <Shield className="mr-2 h-4 w-4" />
-                Two-Factor Auth
-              </Button>
-              
-              <Button variant="outline" className="w-full justify-start">
-                <Globe className="mr-2 h-4 w-4" />
-                Login Sessions
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Quick Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-heading">Support</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Button variant="outline" className="w-full justify-start">
-                Help Center
-              </Button>
-              
-              <Button variant="outline" className="w-full justify-start">
-                Contact Support
-              </Button>
-              
-              <Button variant="outline" className="w-full justify-start text-destructive">
-                Delete Account
-              </Button>
             </CardContent>
           </Card>
         </div>

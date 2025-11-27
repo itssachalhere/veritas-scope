@@ -16,6 +16,7 @@ import DocumentAnalysis from "./pages/DocumentAnalysis";
 import Lawyers from "./pages/Lawyers";
 import Updates from "./pages/Updates";
 import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import LawyerDashboard from "./pages/lawyer/Dashboard";
 import Consultations from "./pages/lawyer/Consultations";
@@ -49,6 +50,7 @@ const App = () => (
               <Route path="lawyers" element={<Lawyers />} />
               <Route path="updates" element={<Updates />} />
               <Route path="profile" element={<Profile />} />
+              <Route path="settings" element={<Settings />} />
             </Route>
             
             {/* Lawyer Routes - Protected */}
