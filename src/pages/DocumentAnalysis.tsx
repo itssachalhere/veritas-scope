@@ -26,6 +26,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
+// Message type for chat
+type ChatMessage = {
+  role: 'user' | 'assistant';
+  content: string;
+  type: string;
+  source: string;
+};
+
 // Mock analysis data structure
 const analysisData: Record<string, any> = {
   "1": {
@@ -172,7 +180,7 @@ const DocumentAnalysis = () => {
   const analysis = id ? analysisData[id] : null;
 
   // Mock chat messages for the assistant
-  const [messages] = useState([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: 'assistant',
       content: 'Hello! I\'ve analyzed this document and I\'m ready to answer any questions. How can I help you understand this contract better?',
@@ -187,6 +195,33 @@ const DocumentAnalysis = () => {
     'Explain the termination clause',
     'Is this agreement safe for me?'
   ];
+
+  // TODO: Replace this with actual API call to /documents/:id/chat
+  const handleSendMessage = async () => {
+    if (!messageInput.trim()) return;
+
+    const userMessage: ChatMessage = {
+      role: 'user',
+      content: messageInput,
+      type: 'User Query',
+      source: 'User'
+    };
+
+    // Add user message
+    setMessages(prev => [...prev, userMessage]);
+    setMessageInput('');
+
+    // Simulate API response delay
+    setTimeout(() => {
+      const assistantMessage: ChatMessage = {
+        role: 'assistant',
+        content: 'This is a placeholder response from the assistant. In production, this will be replaced with real AI analysis of your document.',
+        type: 'General QA',
+        source: 'Document'
+      };
+      setMessages(prev => [...prev, assistantMessage]);
+    }, 500);
+  };
 
   if (!analysis) {
     return (
@@ -476,7 +511,13 @@ const DocumentAnalysis = () => {
                       variant="outline"
                       size="sm"
                       className="text-sm"
-                      onClick={() => setMessageInput(chip)}
+                      onClick={() => {
+                        setMessageInput(chip);
+                        // Auto-send after setting the chip message
+                        setTimeout(() => {
+                          handleSendMessage();
+                        }, 100);
+                      }}
                     >
                       {chip}
                     </Button>
@@ -541,11 +582,15 @@ const DocumentAnalysis = () => {
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
-                        // Handle send message
+                        handleSendMessage();
                       }
                     }}
                   />
-                  <Button size="icon" className="h-[60px] w-[60px] flex-shrink-0">
+                  <Button 
+                    size="icon" 
+                    className="h-[60px] w-[60px] flex-shrink-0"
+                    onClick={handleSendMessage}
+                  >
                     <Send className="h-5 w-5" />
                   </Button>
                 </div>
@@ -630,11 +675,15 @@ const DocumentAnalysis = () => {
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                       e.preventDefault();
-                      // Handle send message
+                      handleSendMessage();
                     }
                   }}
                 />
-                <Button size="icon" className="h-[50px] w-[50px] flex-shrink-0">
+                <Button 
+                  size="icon" 
+                  className="h-[50px] w-[50px] flex-shrink-0"
+                  onClick={handleSendMessage}
+                >
                   <Send className="h-4 w-4" />
                 </Button>
               </div>
