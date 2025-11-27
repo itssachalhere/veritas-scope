@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Calendar, User, Settings, LogOut, Menu, FileText, Briefcase } from "lucide-react";
+import { LayoutDashboard, Calendar, User, Settings, LogOut, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
@@ -11,18 +11,11 @@ const LawyerLayout = () => {
   const { logout, user } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const accountNavItems = [
-    { icon: LayoutDashboard, label: "User Dashboard", path: "/app/dashboard" },
-    { icon: FileText, label: "Documents", path: "/app/documents" },
-    { icon: User, label: "Profile", path: "/app/profile" },
-    { icon: Settings, label: "Settings", path: "/app/settings" },
-  ];
-
-  const lawyerNavItems = [
-    { icon: Briefcase, label: "Lawyer Dashboard", path: "/lawyer/dashboard" },
+  const navItems = [
+    { icon: LayoutDashboard, label: "Dashboard", path: "/lawyer/dashboard" },
     { icon: Calendar, label: "Consultations", path: "/lawyer/consultations" },
-    { icon: User, label: "Lawyer Profile", path: "/lawyer/profile" },
-    { icon: Settings, label: "Lawyer Settings", path: "/lawyer/settings" },
+    { icon: User, label: "My Profile", path: "/lawyer/profile" },
+    { icon: Settings, label: "Settings", path: "/lawyer/settings" },
   ];
 
   const handleLogout = () => {
@@ -31,58 +24,26 @@ const LawyerLayout = () => {
   };
 
   const NavContent = () => (
-    <nav className="space-y-6">
-      {/* My Account Section */}
-      <div className="space-y-2">
-        <h3 className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-          My Account
-        </h3>
-        {accountNavItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = location.pathname === item.path;
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                isActive
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              <Icon className="h-5 w-5" />
-              <span className="font-medium">{item.label}</span>
-            </Link>
-          );
-        })}
-      </div>
-
-      {/* Lawyer Tools Section */}
-      <div className="space-y-2">
-        <h3 className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-          Lawyer Tools
-        </h3>
-        {lawyerNavItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = location.pathname === item.path;
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                isActive
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              <Icon className="h-5 w-5" />
-              <span className="font-medium">{item.label}</span>
-            </Link>
-          );
-        })}
-      </div>
+    <nav className="space-y-2">
+      {navItems.map((item) => {
+        const Icon = item.icon;
+        const isActive = location.pathname === item.path;
+        return (
+          <Link
+            key={item.path}
+            to={item.path}
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+              isActive
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            <Icon className="h-5 w-5" />
+            <span className="font-medium">{item.label}</span>
+          </Link>
+        );
+      })}
     </nav>
   );
 

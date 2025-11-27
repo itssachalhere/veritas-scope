@@ -37,9 +37,9 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/register" element={<Register />} />
             
-            {/* User Routes - Protected (accessible by both USER and LAWYER) */}
+            {/* User Routes - Protected */}
             <Route path="/app" element={
-              <RequireAuth roles={['USER', 'LAWYER']}>
+              <RequireAuth roles={['USER']}>
                 <Layout />
               </RequireAuth>
             }>
