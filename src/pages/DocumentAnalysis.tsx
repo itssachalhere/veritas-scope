@@ -288,18 +288,21 @@ const DocumentAnalysis = () => {
         </div>
       </div>
 
-      {/* Tabs */}
-      <Tabs defaultValue="analysis" className="w-full">
-        <TabsList className="grid w-full max-w-md grid-cols-2">
-          <TabsTrigger value="analysis">Analysis</TabsTrigger>
-          <TabsTrigger value="assistant">
-            <Sparkles className="h-4 w-4 mr-2" />
-            Assistant
-          </TabsTrigger>
-        </TabsList>
+      {/* Two Column Layout */}
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Left Column - Analysis Tabs */}
+        <div className="flex-1 lg:w-[65%]">
+          <Tabs defaultValue="analysis" className="w-full">
+            <TabsList className="grid w-full max-w-md grid-cols-2">
+              <TabsTrigger value="analysis">Analysis</TabsTrigger>
+              <TabsTrigger value="assistant" className="lg:hidden">
+                <Sparkles className="h-4 w-4 mr-2" />
+                Assistant
+              </TabsTrigger>
+            </TabsList>
 
-        {/* Analysis Tab */}
-        <TabsContent value="analysis" className="space-y-6 mt-6">
+            {/* Analysis Tab */}
+            <TabsContent value="analysis" className="space-y-6 mt-6">
           {/* Summary Section */}
           <Card>
         <CardHeader>
@@ -448,10 +451,10 @@ const DocumentAnalysis = () => {
               </ul>
             </CardContent>
           </Card>
-        </TabsContent>
+            </TabsContent>
 
-        {/* Assistant Tab */}
-        <TabsContent value="assistant" className="mt-6">
+            {/* Assistant Tab (Mobile Only) */}
+            <TabsContent value="assistant" className="mt-6 lg:hidden">
           <div className="flex flex-col h-[calc(100vh-280px)]">
             {/* Header */}
             <Card className="mb-4">
@@ -549,8 +552,96 @@ const DocumentAnalysis = () => {
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
-      </Tabs>
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        {/* Right Column - Compact Assistant Panel (Desktop Only) */}
+        <div className="hidden lg:block lg:w-[35%]">
+          <Card className="sticky top-6 flex flex-col h-[calc(100vh-200px)]">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-primary" />
+                    Assistant
+                  </CardTitle>
+                  <CardDescription className="text-xs mt-1">
+                    Ask quick questions about this document
+                  </CardDescription>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    const tabTrigger = document.querySelector('[value="assistant"]') as HTMLElement;
+                    tabTrigger?.click();
+                  }}
+                  className="text-xs"
+                >
+                  Open full →
+                </Button>
+              </div>
+            </CardHeader>
+
+            <Separator />
+
+            {/* Recent Messages */}
+            <ScrollArea className="flex-1 p-4">
+              <div className="space-y-3">
+                {messages.slice(-3).map((message, index) => (
+                  <div
+                    key={index}
+                    className={cn(
+                      "flex",
+                      message.role === 'user' ? 'justify-end' : 'justify-start'
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "max-w-[90%] rounded-lg p-3 text-xs",
+                        message.role === 'user'
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-muted'
+                      )}
+                    >
+                      {message.role === 'assistant' && (
+                        <Badge variant="outline" className="mb-2 text-[10px] h-5">
+                          {message.type}
+                        </Badge>
+                      )}
+                      <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </ScrollArea>
+
+            <Separator />
+
+            {/* Quick Input */}
+            <CardContent className="p-3">
+              <div className="flex gap-2">
+                <Textarea
+                  placeholder="Ask a quick question..."
+                  value={messageInput}
+                  onChange={(e) => setMessageInput(e.target.value)}
+                  className="min-h-[50px] text-sm resize-none"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      // Handle send message
+                    }
+                  }}
+                />
+                <Button size="icon" className="h-[50px] w-[50px] flex-shrink-0">
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };
