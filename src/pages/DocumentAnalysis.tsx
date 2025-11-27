@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { 
   ArrowLeft, 
   FileText, 
@@ -12,12 +13,17 @@ import {
   TrendingUp,
   Shield,
   Scale,
-  Clock
+  Clock,
+  Send,
+  Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
 // Mock analysis data structure
@@ -161,8 +167,26 @@ const analysisData: Record<string, any> = {
 const DocumentAnalysis = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [messageInput, setMessageInput] = useState('');
   
   const analysis = id ? analysisData[id] : null;
+
+  // Mock chat messages for the assistant
+  const [messages] = useState([
+    {
+      role: 'assistant',
+      content: 'Hello! I\'ve analyzed this document and I\'m ready to answer any questions. How can I help you understand this contract better?',
+      type: 'General QA',
+      source: 'Document'
+    }
+  ]);
+
+  const suggestionChips = [
+    'Give me a summary',
+    'What are the main risks?',
+    'Explain the termination clause',
+    'Is this agreement safe for me?'
+  ];
 
   if (!analysis) {
     return (
@@ -264,8 +288,20 @@ const DocumentAnalysis = () => {
         </div>
       </div>
 
-      {/* Summary Section */}
-      <Card>
+      {/* Tabs */}
+      <Tabs defaultValue="analysis" className="w-full">
+        <TabsList className="grid w-full max-w-md grid-cols-2">
+          <TabsTrigger value="analysis">Analysis</TabsTrigger>
+          <TabsTrigger value="assistant">
+            <Sparkles className="h-4 w-4 mr-2" />
+            Assistant
+          </TabsTrigger>
+        </TabsList>
+
+        {/* Analysis Tab */}
+        <TabsContent value="analysis" className="space-y-6 mt-6">
+          {/* Summary Section */}
+          <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <span>Analysis Overview</span>
@@ -382,36 +418,139 @@ const DocumentAnalysis = () => {
       </Card>
 
       {/* Action Items */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CheckCircle className="h-5 w-5 text-accent" />
-            Next Steps
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul className="space-y-2">
-            <li className="flex items-start gap-3">
-              <div className="p-1 bg-accent/10 rounded mt-0.5">
-                <Shield className="h-3 w-3 text-accent" />
-              </div>
-              <span className="text-sm">Review all identified risk areas with your legal counsel</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <div className="p-1 bg-accent/10 rounded mt-0.5">
-                <Scale className="h-3 w-3 text-accent" />
-              </div>
-              <span className="text-sm">Consider negotiating terms flagged as medium or high severity</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <div className="p-1 bg-accent/10 rounded mt-0.5">
-                <Clock className="h-3 w-3 text-accent" />
-              </div>
-              <span className="text-sm">Request clarification on any ambiguous clauses before signing</span>
-            </li>
-          </ul>
-        </CardContent>
-      </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-accent" />
+                Next Steps
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2">
+                <li className="flex items-start gap-3">
+                  <div className="p-1 bg-accent/10 rounded mt-0.5">
+                    <Shield className="h-3 w-3 text-accent" />
+                  </div>
+                  <span className="text-sm">Review all identified risk areas with your legal counsel</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="p-1 bg-accent/10 rounded mt-0.5">
+                    <Scale className="h-3 w-3 text-accent" />
+                  </div>
+                  <span className="text-sm">Consider negotiating terms flagged as medium or high severity</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="p-1 bg-accent/10 rounded mt-0.5">
+                    <Clock className="h-3 w-3 text-accent" />
+                  </div>
+                  <span className="text-sm">Request clarification on any ambiguous clauses before signing</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Assistant Tab */}
+        <TabsContent value="assistant" className="mt-6">
+          <div className="flex flex-col h-[calc(100vh-280px)]">
+            {/* Header */}
+            <Card className="mb-4">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                  Ask About This Contract
+                </CardTitle>
+                <CardDescription>
+                  The assistant knows this document's clauses, risks and legal references. Ask in simple language.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {/* Suggestion Chips */}
+                <div className="flex flex-wrap gap-2">
+                  {suggestionChips.map((chip, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      size="sm"
+                      className="text-sm"
+                      onClick={() => setMessageInput(chip)}
+                    >
+                      {chip}
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Chat Messages */}
+            <Card className="flex-1 flex flex-col mb-4">
+              <ScrollArea className="flex-1 p-6">
+                <div className="space-y-4">
+                  {messages.map((message, index) => (
+                    <div
+                      key={index}
+                      className={cn(
+                        "flex",
+                        message.role === 'user' ? 'justify-end' : 'justify-start'
+                      )}
+                    >
+                      <Card
+                        className={cn(
+                          "max-w-[80%]",
+                          message.role === 'user'
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-muted'
+                        )}
+                      >
+                        {message.role === 'assistant' && (
+                          <CardHeader className="pb-2">
+                            <Badge variant="outline" className="w-fit text-xs">
+                              {message.type}
+                            </Badge>
+                          </CardHeader>
+                        )}
+                        <CardContent className={cn(message.role === 'assistant' ? 'pt-2' : 'p-4')}>
+                          <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                          {message.role === 'assistant' && (
+                            <div className="mt-3 pt-3 border-t border-border">
+                              <p className="text-xs text-foreground-muted">
+                                Source: {message.source}
+                              </p>
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </Card>
+
+            {/* Input Bar */}
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex gap-2">
+                  <Textarea
+                    placeholder="Ask anything about this contract…"
+                    value={messageInput}
+                    onChange={(e) => setMessageInput(e.target.value)}
+                    className="min-h-[60px] resize-none"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        // Handle send message
+                      }
+                    }}
+                  />
+                  <Button size="icon" className="h-[60px] w-[60px] flex-shrink-0">
+                    <Send className="h-5 w-5" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
