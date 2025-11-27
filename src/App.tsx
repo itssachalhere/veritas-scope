@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
+import LawyerLayout from "./components/LawyerLayout";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Register from "./pages/Register";
@@ -14,6 +15,10 @@ import Lawyers from "./pages/Lawyers";
 import Updates from "./pages/Updates";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import LawyerDashboard from "./pages/lawyer/Dashboard";
+import Consultations from "./pages/lawyer/Consultations";
+import LawyerProfile from "./pages/lawyer/Profile";
+import LawyerSettings from "./pages/lawyer/Settings";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +40,13 @@ const App = () => (
             <Route path="lawyers" element={<Lawyers />} />
             <Route path="updates" element={<Updates />} />
             <Route path="profile" element={<Profile />} />
+          </Route>
+          <Route path="/lawyer" element={<LawyerLayout />}>
+            <Route index element={<LawyerDashboard />} />
+            <Route path="dashboard" element={<LawyerDashboard />} />
+            <Route path="consultations" element={<Consultations />} />
+            <Route path="profile" element={<LawyerProfile />} />
+            <Route path="settings" element={<LawyerSettings />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
